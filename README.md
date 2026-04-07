@@ -1,6 +1,5 @@
 # Perception Chains: Stabilizing Multimodal Reasoning with Explicit Visual Intermediates
 
-> **ACM MM '26**
 
 ## Abstract
 
@@ -23,7 +22,7 @@ Perception Chains treats grounding as a two-level problem:
 - **At the output level**, Anchored Visual Evidence (AVE) requires each reasoning step to name a region, extract an attribute from that region, and assign that attribute to a reasoning slot before drawing any conclusion.
 - **At the representation level**, satisfying AVE at the output does not mean the model's internal states are well-grounded. The Stability Loss addresses this directly by constraining how far the model's hidden state at each anchor position can deviate from the teacher's grounding direction — a property that task-loss gradients cannot enforce by construction (Theorem 1).
 
-![Figure 1](assets/fig1_failure_modes.png)
+![Figure 1](assets/image.png)
 
 **Figure 1:** Four failure modes in current MLLMs (upper rows) and their anchor-level decomposition (lower rows). Columns 1–3 show structurally independent error types: wrong region (b_i), wrong attribute (v_i), wrong slot binding (s_i). Column 4 shows a consistent-but-wrong chain that lies outside the reach of local repair.
 
@@ -49,7 +48,7 @@ An anchor chain C = (a_1, …, a_K) is an ordered sequence of anchor nodes produ
 
 ## 3 The Perception Chains Framework
 
-![Figure 2](assets/fig2_framework.png)
+![Figure 2](assets/fig2.png)
 
 **Figure 2:** Perception Chains overview. **Left (Training):** A frozen 72B teacher's self-consistent trajectories are cached offline. The stability loss drives ‖P⊥J_l‖₂ < 1 at each active anchor layer (blue); SFT-AVE leaves ‖A_{l*→L}‖₂ ≥ 1 throughout training (red, drift amplified). **Right (Inference):** AVE assembles anchor chain C = (a₁, …, a_K); PRL flags inconsistent anchors I and re-localizes before committing the final answer.
 
@@ -160,7 +159,7 @@ Perception Chains exceeds Ferret on RefCOCO (66.0 vs. 63.0) and Flickr30k (70.0 
 | SFT-AVE (format, no stab. loss) | 1.26 | 1.25 | 1.41 | >99% |
 | **Perception Chains** | **0.79** | **0.78** | **0.89** | **<1%** |
 
-![Figure 3](assets/fig3_opnorm_dynamics.png)
+![Figure 3](assets/fig3.png)
 
 **Figure 3:** Training dynamics of the 95th-percentile composite transversal operator norm ‖A_{l\*→L}‖₂.
 
@@ -245,7 +244,7 @@ The pre-norm ordering matches the accuracy-gain ordering exactly. Tasks where te
 
 ### 5.2 Inference Cost and Deployment Flexibility
 
-![Figure 4](assets/fig4_efficiency.png)
+![Figure 4](assets/fig4.png)
 
 **Figure 4:** Inference overhead and accuracy across all methods and ablations (left), and the accuracy–overhead trade-off as τ_PRL varies (right).
 
@@ -346,24 +345,12 @@ perception_chains/
     └── measure_operator_norm.py
 ```
 
-### Figures to Upload
-
-Place your figure files in `assets/` with these names:
-
-| README reference | Source in tex | Description |
-|-----------------|---------------|-------------|
-| `assets/fig1_failure_modes.png` | `image.png` | Figure 1: Four failure modes |
-| `assets/fig2_framework.png` | `frameworkacm.pdf` | Figure 2: Pipeline overview |
-| `assets/fig3_opnorm_dynamics.png` | `opnorm_dynamics_v3.pdf` | Figure 3: Operator norm training dynamics |
-| `assets/fig4_efficiency.png` | `trace_cost_benefit_v15.pdf` | Figure 4: Inference overhead & Pareto |
-
 ## Citation
 
 ```bibtex
 @inproceedings{perceptionchains2026,
   title={Perception Chains: Stabilizing Multimodal Reasoning with Explicit Visual Intermediates},
-  author={Anonymous},
-  booktitle={ACM Multimedia},
+  author={DongqiZuo}
   year={2026}
 }
 ```
