@@ -1,0 +1,68 @@
+# Perception Chains training configuration
+model:
+  student: "Qwen/Qwen2.5-VL-7B-Instruct"
+  teacher: "Qwen/Qwen2.5-VL-72B-Instruct"
+  d_s: 3584   # student hidden dim
+  d_t: 7168   # teacher hidden dim
+
+anchor:
+  K: 4                  # number of anchor slots per question
+  coord_format: "qwen"  # [x1, y1, x2, y2] in [0, 1000]
+
+stability_loss:
+  lambda_stab: 1.0
+  sigma: 0.01
+  alpha: 0.10
+  active_percentile: 5  # layer active if teacher update > 5th pct
+
+ctb:
+  phase1:
+    num_cold: 5000
+    k_samples: 8
+    tau_samp: 0.7
+    top_p: 0.9
+  phase2:
+    rounds: 2
+    tau_conf: 0.5
+    k_samples: 8
+    tau_samp: 0.7
+  wproj:
+    num_calibration: 1000
+
+prl:
+  n_vote: 4
+  tau_samp: 0.7
+  t_max: 2
+  nli_threshold: 0.5
+  tau_prl: 0.0  # default threshold
+
+training:
+  lr: 2.0e-5
+  scheduler: "cosine"
+  batch_size: 256
+  num_epochs: 3
+  warmup_ratio: 0.03
+  weight_decay: 0.01
+  seeds: [42, 0, 2]
+  per_benchmark_cap: 12500  # balanced mixture
+  gradient_checkpointing: true
+  bf16: true
+
+evaluation:
+  seen_benchmarks:
+    - "ChartQA"
+    - "DocVQA"
+    - "RSVQA"
+    - "DIOR-RSVG"
+    - "MuMuQA"
+    - "MMIU"
+    - "POPE"
+    - "HallusionBench"
+  unseen_benchmarks:
+    - "GQA"
+    - "TextVQA"
+    - "AI2D"
+    - "ObjHalBench"
+    - "Hallucinogen"
+    - "RefCOCO"
+    - "Flickr30k"
